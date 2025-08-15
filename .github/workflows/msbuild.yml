@@ -1,0 +1,44 @@
+name: Build VS Project (Python + C++ x86)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # 1. Checkout your repository
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # Change to your required version
+
+      # 3. Install Python dependencies (optional)
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # 4. Set up MSBuild (Visual Studio)
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      # 5. Build the Visual Studio project for x86 (Win32)
+      - name: Build with MSBuild (x86)
+        run: msbuild RobloxDumper.sln /p:Configuration=Release /p:Platform=Win32
+
+      # 6. Upload compiled artifacts
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            **/Release/**
+            !**/*.pdb  # Optional: exclude debug symbols
