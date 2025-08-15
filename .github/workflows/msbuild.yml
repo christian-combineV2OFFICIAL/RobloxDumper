@@ -32,7 +32,7 @@ jobs:
 
       # 5. Build the Visual Studio project for x86 (Win32)
       - name: Build with MSBuild (x86)
-        run: msbuild RobloxDumper.sln /p:Configuration=Release /p:Platform=Win32
+        run: msbuild RobloxDumper.sln /p:Configuration=Release /p:Platform=x86
 
       # 6. Upload compiled artifacts
       - name: Upload build output
